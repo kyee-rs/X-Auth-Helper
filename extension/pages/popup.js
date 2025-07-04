@@ -1,20 +1,27 @@
+// Use browser API if available (Firefox), fallback to chrome API (Chrome)
+const browserAPI = typeof browser !== "undefined" ? browser : chrome;
+
 // Handles click event for getting API-Key
-document.getElementById('get-key').addEventListener('click', () => {
-    chrome.runtime.sendMessage({ action: 'getCookies' }, response => {
-      	// Getting the output area
-		const output = document.getElementById('key-output');
-		
-		if (response.success) {
-        	output.textContent = response.key;
-      	}
-		else {
-			output.textContent = "Failed to get key! Please try again.";
-		}
-    });
+document.getElementById("get-key").addEventListener("click", () => {
+    browserAPI.runtime.sendMessage(
+        { action: "getCookies" },
+        (response) => {
+            // Getting the output area
+            const output = document.getElementById("key-output");
+
+            if (response.success) {
+                output.textContent = response.key;
+            } else {
+                output.textContent =
+                    "Failed to get key! Please try again.";
+            }
+        },
+    );
 });
 
 // Handles copying the key using the button
-document.getElementById('copy-key').addEventListener('click', () => {
-	navigator.clipboard.writeText(document.getElementById('key-output').value);
-})
-  
+document.getElementById("copy-key").addEventListener("click", () => {
+    navigator.clipboard.writeText(
+        document.getElementById("key-output").value,
+    );
+});
